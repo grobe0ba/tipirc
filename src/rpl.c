@@ -71,6 +71,61 @@
   X(TRACELOG, 261)        \
   X(TRACEEND, 262)
 
+#define ERPLS(X)            \
+  X(NOSUCHNICK, 401)        \
+  X(NOSUCHSERVER, 402)      \
+  X(NOSUCHCHANNEL, 403)     \
+  X(CANNOTSENDTOCHAN, 404)  \
+  X(TOOMANYCHANNELS, 405)   \
+  X(WASNOSUCHNICK, 406)     \
+  X(TOOMANYTARGETS, 407)    \
+  X(NOSUCHSERVICE, 408)     \
+  X(NOORIGIN, 409)          \
+  X(NORECIPIENT, 411)       \
+  X(NOTEXTTOSEND, 412)      \
+  X(NOTOPLEVEL, 413)        \
+  X(WILDTOPLEVEL, 414)      \
+  X(BADMASK, 415)           \
+  X(UNKNOWNCOMMAND, 421)    \
+  X(NOMOTD, 422)            \
+  X(NOADMININFO, 423)       \
+  X(FILEERROR, 424)         \
+  X(NONICKNAMEGIVEN, 431)   \
+  X(ERRONEUSNICKNAME, 432)  \
+  X(NICKNAMEINUSE, 433)     \
+  X(NICKCOLLISION, 436)     \
+  X(UNAVAILRESOURCE, 437)   \
+  X(USERNOTINCHANNEL, 441)  \
+  X(NOTONCHANNEL, 442)      \
+  X(USERONCHANNEL, 443)     \
+  X(NOLOGIN, 444)           \
+  X(SUMMONDISABLED, 445)    \
+  X(USERSDISABLED, 446)     \
+  X(NOTREGISTERED, 451)     \
+  X(NEEDMOREPARAMS, 461)    \
+  X(ALREADYREGISTERED, 462) \
+  X(NOPERMFORHOST, 463)     \
+  X(PASSWORDMISMATCH, 464)  \
+  X(YOUREBANNEDCREEP, 465)  \
+  X(YOUWILLBEBANNED, 466)   \
+  X(KEYSET, 467)            \
+  X(CHANNELISFULL, 471)     \
+  X(UNKNOWNMODE, 472)       \
+  X(INVITEONLYCHAN, 473)    \
+  X(BANNEDFROMCHAN, 474)    \
+  X(BADCHANNELKEY, 475)     \
+  X(BADCHANMASK, 476)       \
+  X(NOCHANMODES, 477)       \
+  X(BANLISTFULL, 478)       \
+  X(NOPRIVILEGES, 481)      \
+  X(CHANOPRIVSNEEDED, 482)  \
+  X(CANTKILLSERVER, 483)    \
+  X(RESTRICTED, 484)        \
+  X(UNIQOPRIVSNEEDED, 485)  \
+  X(NOOPERHOST, 491)        \
+  X(UMODEUNKNOWNFLAG, 501)  \
+  X(USERSDONTMATCH, 502)
+
 #if INTERFACE
 typedef struct {
   const char *name;
@@ -80,12 +135,22 @@ typedef struct {
 typedef enum XeRPL eRPL;
 #endif
 
+typedef enum {
+  RPL_BADRPL = -1,
 #define ENUM(rpl, val) RPL_##rpl,
-typedef enum XeRPL { RPL_BADRPL = -1, RPLS(ENUM) RPL_MAX } eRPL;
+  RPLS(ENUM)
 #undef ENUM
+#define ENUM(rpl, val) ERR_##rpl,
+      ERPLS(ENUM)
+#undef ENUM
+          RPL_MAX
+} eRPL;
 
+const sRPL sRPLlist[] = {
 #define sRPL(rpl, xval) (sRPL){.name = #rpl, .val = #xval, .ival = xval},
-const sRPL sRPLlist[] = {RPLS(sRPL)};
+    RPLS(sRPL) ERPLS(sRPL)
+#undef sRPL
+};
 
 const sRPL eRPL2sRPL(eRPL repl) {
   if (repl > RPL_BADRPL && repl < RPL_MAX) {
@@ -100,6 +165,10 @@ const char *RPL2string(eRPL repl) {
   if (repl == RPL_##rpl) return sRPLlist[RPL_##rpl].name;
     RPLS(R2s)
 #undef R2s
+#define R2s(rpl, val) \
+  if (repl == ERR_##rpl) return sRPLlist[ERR_##rpl].name;
+    ERPLS(R2s)
+#undef R2s
   }
   return NULL;
 }
@@ -109,6 +178,10 @@ const int string2RPL(char *repl) {
   if (strncmp(repl, sRPLlist[RPL_##rpl].name, 16) == 0) return RPL_##rpl;
   RPLS(s2R)
 #undef s2R
+#define s2R(rpl, val) \
+  if (strncmp(repl, sRPLlist[ERR_##rpl].name, 16) == 0) return ERR_##rpl;
+  ERPLS(s2R)
+#undef s2R
   return RPL_BADRPL;
 }
 
@@ -116,6 +189,10 @@ const eRPL valstring2RPL(char *repl) {
 #define s2R(rpl, xval) \
   if (strncmp(repl, sRPLlist[RPL_##rpl].val, 3) == 0) return RPL_##rpl;
   RPLS(s2R)
+#undef s2R
+#define s2R(rpl, xval) \
+  if (strncmp(repl, sRPLlist[ERR_##rpl].val, 3) == 0) return ERR_##rpl;
+  ERPLS(s2R)
 #undef s2R
   return RPL_BADRPL;
 }
