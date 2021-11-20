@@ -18,12 +18,12 @@ IOBJ= ${ROOT}/iobj
 .ifnmake clean
 .BEGIN:
 	make -C "${ROOT}/third_party" install
-	${IOBJ}/makeheaders *.c *.cc
+	${IOBJ}/makeheaders *.cc
 .endif
 
 LIB= tipirc
-SRCS= rpl.c cmds.c tipirc.cc
-CLEANFILES= rpl.h cmds.h tipirc.hh
+SRCS= rpl.cc cmds.cc tipirc.cc
+CLEANFILES= rpl.hh cmds.hh tipirc.hh
 COPTS= -I/usr/local/include \
 	   -I"${IOBJ}/include"
 
