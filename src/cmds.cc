@@ -86,7 +86,7 @@ typedef enum {
 const char *cmdStrings[] = {CMDS(TXT)};
 #undef TXT
 
-const char *CMD2string(CMD cmd) {
+EXPORT const char *CMD2string(CMD cmd) {
   if (cmd > CMD_BADCMD && cmd < CMD_MAX) {
 #define C2s(c, a...) \
   if (cmd == CMD_##c) return cmdStrings[CMD_##c];
@@ -96,7 +96,7 @@ const char *CMD2string(CMD cmd) {
   return NULL;
 }
 
-const CMD string2CMD(const char *cmd) {
+EXPORT const CMD string2CMD(const char *cmd) {
 #define s2C(c, a...) \
   if (strncmp(cmd, cmdStrings[CMD_##c], 8) == 0) return CMD_##c;
   CMDS(s2C)
@@ -108,108 +108,108 @@ const CMD string2CMD(const char *cmd) {
 // #define PROTO(com, args...) int cmd##com(args){ return 0; }
 // CMDS(PROTO)
 
-int cmdPASS(const char *password) { return 0; }
+EXPORT int cmdPASS(const char *password) { return 0; }
 
-int cmdNICK(const char *nickname) { return 0; }
+EXPORT int cmdNICK(const char *nickname) { return 0; }
 
-int cmdUSER(const char *user, const char *mode, const char *realname) {
+EXPORT int cmdUSER(const char *user, const char *mode, const char *realname) {
   return 0;
 }
 
-int cmdOPER(const char *name, const char *password) { return 0; }
+EXPORT int cmdOPER(const char *name, const char *password) { return 0; }
 
-int cmdSERVICE(const char *nickname, const char *distribution, const char *type,
+EXPORT int cmdSERVICE(const char *nickname, const char *distribution, const char *type,
 
                const char *info) {
   return 0;
 }
 
-int cmdQUIT(const char *message) { return 0; }
+EXPORT int cmdQUIT(const char *message) { return 0; }
 
-int cmdSQUIT(const char *server, const char *comment) { return 0; }
+EXPORT int cmdSQUIT(const char *server, const char *comment) { return 0; }
 
-int cmdJOIN(const cmdList2 channels[]) { return 0; }
+EXPORT int cmdJOIN(const cmdList2 channels[]) { return 0; }
 
-int cmdPART(const cmdList2 channels[], const char *message) { return 0; }
+EXPORT int cmdPART(const cmdList2 channels[], const char *message) { return 0; }
 
-int cmdMODE(const char *channel, const char **modes, const char **modeparams) {
+EXPORT int cmdMODE(const char *channel, const char **modes, const char **modeparams) {
   return 0;
 }
 
-int cmdTOPIC(const char *channel, const char *topic) { return 0; }
+EXPORT int cmdTOPIC(const char *channel, const char *topic) { return 0; }
 
-int cmdNAMES(const cmdList2 channels[], const char *target) { return 0; }
+EXPORT int cmdNAMES(const cmdList2 channels[], const char *target) { return 0; }
 
-int cmdLIST(const cmdList2 channels[], const char *target) { return 0; }
+EXPORT int cmdLIST(const cmdList2 channels[], const char *target) { return 0; }
 
-int cmdINVITE(const char *nickname, const char *channel) { return 0; }
+EXPORT int cmdINVITE(const char *nickname, const char *channel) { return 0; }
 
-int cmdKICK(const cmdList2 channels[], const cmdList2 users[], char *comment) {
+EXPORT int cmdKICK(const cmdList2 channels[], const cmdList2 users[], char *comment) {
   return 0;
 }
 
-int cmdPRIVMSG(const char *target, const char *message) { return 0; }
+EXPORT int cmdPRIVMSG(const char *target, const char *message) { return 0; }
 
-int cmdNOTICE(const char *target, const char *text) { return 0; }
+EXPORT int cmdNOTICE(const char *target, const char *text) { return 0; }
 
-int cmdMOTD(const char *target) { return 0; }
+EXPORT int cmdMOTD(const char *target) { return 0; }
 
-int cmdLUSERS(const char *mask, const char *target) { return 0; }
+EXPORT int cmdLUSERS(const char *mask, const char *target) { return 0; }
 
-int cmdVERSION(const char *target) { return 0; }
+EXPORT int cmdVERSION(const char *target) { return 0; }
 
-int cmdSTATS(const char *query, const char *target) { return 0; }
+EXPORT int cmdSTATS(const char *query, const char *target) { return 0; }
 
-int cmdLINKS(const char *remote_server, const char *server_mask) { return 0; }
+EXPORT int cmdLINKS(const char *remote_server, const char *server_mask) { return 0; }
 
-int cmdTIME(const char *target) { return 0; }
+EXPORT int cmdTIME(const char *target) { return 0; }
 
-int cmdCONNECT(const char *target_server, int port, const char *remote_server) {
+EXPORT int cmdCONNECT(const char *target_server, int port, const char *remote_server) {
   return 0;
 }
 
-int cmdTRACE(const char *target) { return 0; }
+EXPORT int cmdTRACE(const char *target) { return 0; }
 
-int cmdADMIN(const char *target) { return 0; }
+EXPORT int cmdADMIN(const char *target) { return 0; }
 
-int cmdINFO(const char *target) { return 0; }
+EXPORT int cmdINFO(const char *target) { return 0; }
 
-int cmdSERVLIST(const char *mask, const char *type) { return 0; }
+EXPORT int cmdSERVLIST(const char *mask, const char *type) { return 0; }
 
-int cmdSQUERY(const char *servicename, const char *text) { return 0; }
+EXPORT int cmdSQUERY(const char *servicename, const char *text) { return 0; }
 
-int cmdWHO(const char *mask) { return 0; }
+EXPORT int cmdWHO(const char *mask) { return 0; }
 
-int cmdWHOIS(const char *target, const cmdList2 masks[]) { return 0; }
+EXPORT int cmdWHOIS(const char *target, const cmdList2 masks[]) { return 0; }
 
-int cmdWHOWAS(const cmdList2 nicknames[], int count, const char *target) {
+EXPORT int cmdWHOWAS(const cmdList2 nicknames[], int count, const char *target) {
   return 0;
 }
 
-int cmdKILL(const char *nickname, const char *comment) { return 0; }
+EXPORT int cmdKILL(const char *nickname, const char *comment) { return 0; }
 
-int cmdPING(const char *server1, const char *server2) { return 0; }
+EXPORT int cmdPING(const char *server1, const char *server2) { return 0; }
 
-int cmdPONG(const char *server1, const char *server2) { return 0; }
+EXPORT int cmdPONG(const char *server1, const char *server2) { return 0; }
 
-int cmdERROR(const char *error_message) { return 0; }
+EXPORT int cmdERROR(const char *error_message) { return 0; }
 
-int cmdAWAY(const char *text) { return 0; }
+EXPORT int cmdAWAY(const char *text) { return 0; }
 
-int cmdREHASH() { return 0; }
+EXPORT int cmdREHASH() { return 0; }
 
-int cmdDIE() { return 0; }
+EXPORT int cmdDIE() { return 0; }
 
-int cmdRESTART() { return 0; }
+EXPORT int cmdRESTART() { return 0; }
 
-int cmdSUMMON(const char *user, const char *target, const char *channel) {
+EXPORT int cmdSUMMON(const char *user, const char *target, const char *channel) {
   return 0;
 }
 
-int cmdUSERS(const char *target) { return 0; }
+EXPORT int cmdUSERS(const char *target) { return 0; }
 
-int cmdWALLOPS(const char *text) { return 0; }
+EXPORT int cmdWALLOPS(const char *text) { return 0; }
 
-int cmdUSERHOST(const cmdList2 nicknames[]) { return 0; }
+EXPORT int cmdUSERHOST(const cmdList2 nicknames[]) { return 0; }
 
-int cmdISON(const cmdList2 nicknames[]) { return 0; }
+EXPORT int cmdISON(const cmdList2 nicknames[]) { return 0; }

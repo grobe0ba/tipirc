@@ -167,14 +167,14 @@ const sRPL sRPLlist[] = {
 #undef sRPL
 };
 
-const sRPL RPL2sRPL(RPL repl) {
+EXPORT const sRPL RPL2sRPL(RPL repl) {
   if (repl > RPL_BADRPL && repl < RPL_MAX) {
     return sRPLlist[repl];
   }
   return (sRPL){NULL, NULL, RPL_BADRPL};
 }
 
-const char *RPL2string(RPL repl) {
+EXPORT const char *RPL2string(RPL repl) {
   if (repl > RPL_BADRPL && repl < RPL_MAX) {
 #define R2s(rpl, val) \
   if (repl == RPL_##rpl) return sRPLlist[RPL_##rpl].name;
@@ -188,7 +188,7 @@ const char *RPL2string(RPL repl) {
   return NULL;
 }
 
-const int string2RPL(char *repl) {
+EXPORT const int string2RPL(char *repl) {
 #define s2R(rpl, val) \
   if (strncmp(repl, sRPLlist[RPL_##rpl].name, 16) == 0) return RPL_##rpl;
   RPLS(s2R)
@@ -200,7 +200,7 @@ const int string2RPL(char *repl) {
   return RPL_BADRPL;
 }
 
-const RPL valstring2RPL(char *repl) {
+EXPORT const RPL valstring2RPL(char *repl) {
 #define s2R(rpl, xval) \
   if (strncmp(repl, sRPLlist[RPL_##rpl].val, 3) == 0) return RPL_##rpl;
   RPLS(s2R)

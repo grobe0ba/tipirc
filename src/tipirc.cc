@@ -20,7 +20,7 @@
 #include <string>
 
 
-int tipinit(int argc, char **argv) {
+EXPORT int tipinit(int argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::SetUsageMessage("Rubbish Tip IRC client");
   gflags::ParseCommandLineFlags(&argc, &argv, true);

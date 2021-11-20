@@ -1,3 +1,4 @@
+#!/bin/sh
 # Copyright (c) 2021 B. Atticus Grobe (grobe0ba@gmail.com)
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -12,36 +13,32 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-ROOT !!= readlink -f ..
-IOBJ= ${ROOT}/iobj
 
-.ifnmake clean
-.BEGIN:
-	make -C "${ROOT}/third_party" install
-	${IOBJ}/makeheaders *.cc
-	${IOBJ}/makeheaders -H *.cc > tipirc_public.h
-.endif
+HDR="${1}"
 
-LIB= tipirc
-SRCS= rpl.cc cmds.cc tipirc.cc
-CLEANFILES= rpl.hh cmds.hh tipirc.hh tipirc_public.h
-COPTS= -I/usr/local/include \
-	   -I"${IOBJ}/include"
+HDRGUARD="__$(basename "${HDR}" | tr '.' '_' | tr '[:lower:]' '[:upper:]')"
 
-CXXOPTS= -std=c++17 \
-		 -I/usr/local/include \
-		 -I"${IOBJ}/include"
+DEST="$(echo "${2}" | sed -e 's#include/include#include#')"
+DESTDIR="$(dirname "${DEST}")"
 
-LDADD= -L/usr/local/lib \
-	   -L"${IOBJ}/lib" \
-	   -lgflags -lglog
+NEWHDR="$(mktemp hdrinst.sh.XXXXXX)"
 
-HDRS= tipirc_public.h
+if [[ ! -e "${DESTDIR}" ]];
+then
+    mkdir -p "${DESTDIR}"
+fi
 
-.include "${ROOT}/Makefile.inc"
+cat <<EOF > "${NEWHDR}"
+#ifndef ${HDRGUARD}
+#define ${HDRGUARD}
+EOF
 
-.ifmake install
-DESTDIR !!= readlink -f ${ROOT}/iobj
-.endif
+cat "${HDR}" >> "${NEWHDR}"
 
-.include <bsd.lib.mk>
+cat <<EOF >> "${NEWHDR}"
+#endif
+EOF
+
+install -m 644 "${NEWHDR}" "${DEST}"
+
+rm -f "${NEWHDR}"
