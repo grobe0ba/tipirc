@@ -12,12 +12,10 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+#include "cmds.hh"
+
 #include <string.h>
 #include <unistd.h>
-
-#include <uv.h>
-
-#include "cmds.hh"
 
 #if INTERFACE
 
@@ -107,134 +105,6 @@ EXPORT const CMD string2CMD(const char *cmd) {
 }
 
 // Use this to generate empty function block copypasta
-// #define PROTO(com, args...) int cmd##com(uv_tcp_t *c, args){ return 0; }
+// #define PROTO(com, args...) \
+//   void tipirc::cmd##com(args) {}
 // CMDS(PROTO)
-
-int cmdPASS(uv_tcp_t *c, const char *password) { return 0; }
-
-int cmdNICK(uv_tcp_t *c, const char *nickname) { return 0; }
-
-int cmdUSER(uv_tcp_t *c, const char *user, const char *mode,
-            const char *realname) {
-  return 0;
-}
-
-int cmdOPER(uv_tcp_t *c, const char *name, const char *password) { return 0; }
-
-int cmdSERVICE(uv_tcp_t *c, const char *nickname, const char *distribution,
-               const char *type, const char *info) {
-  return 0;
-}
-
-int cmdQUIT(uv_tcp_t *c, const char *message) { return 0; }
-
-int cmdSQUIT(uv_tcp_t *c, const char *server, const char *comment) { return 0; }
-
-int cmdJOIN(uv_tcp_t *c, const cmdList2 channels[]) { return 0; }
-
-int cmdPART(uv_tcp_t *c, const cmdList2 channels[], const char *message) {
-  return 0;
-}
-
-int cmdMODE(uv_tcp_t *c, const char *channel, const char **modes,
-            const char **modeparams) {
-  return 0;
-}
-
-int cmdTOPIC(uv_tcp_t *c, const char *channel, const char *topic) { return 0; }
-
-int cmdNAMES(uv_tcp_t *c, const cmdList2 channels[], const char *target) {
-  return 0;
-}
-
-int cmdLIST(uv_tcp_t *c, const cmdList2 channels[], const char *target) {
-  return 0;
-}
-
-int cmdINVITE(uv_tcp_t *c, const char *nickname, const char *channel) {
-  return 0;
-}
-
-int cmdKICK(uv_tcp_t *c, const cmdList2 channels[], const cmdList2 users[],
-            char *comment) {
-  return 0;
-}
-
-int cmdPRIVMSG(uv_tcp_t *c, const char *target, const char *message) {
-  return 0;
-}
-
-int cmdNOTICE(uv_tcp_t *c, const char *target, const char *text) { return 0; }
-
-int cmdMOTD(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdLUSERS(uv_tcp_t *c, const char *mask, const char *target) { return 0; }
-
-int cmdVERSION(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdSTATS(uv_tcp_t *c, const char *query, const char *target) { return 0; }
-
-int cmdLINKS(uv_tcp_t *c, const char *remote_server, const char *server_mask) {
-  return 0;
-}
-
-int cmdTIME(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdCONNECT(uv_tcp_t *c, const char *target_server, int port,
-               const char *remote_server) {
-  return 0;
-}
-
-int cmdTRACE(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdADMIN(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdINFO(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdSERVLIST(uv_tcp_t *c, const char *mask, const char *type) { return 0; }
-
-int cmdSQUERY(uv_tcp_t *c, const char *servicename, const char *text) {
-  return 0;
-}
-
-int cmdWHO(uv_tcp_t *c, const char *mask) { return 0; }
-
-int cmdWHOIS(uv_tcp_t *c, const char *target, const cmdList2 masks[]) {
-  return 0;
-}
-
-int cmdWHOWAS(uv_tcp_t *c, const cmdList2 nicknames[], int count,
-              const char *target) {
-  return 0;
-}
-
-int cmdKILL(uv_tcp_t *c, const char *nickname, const char *comment) {
-  return 0;
-}
-
-int cmdPING(uv_tcp_t *c, const char *server1, const char *server2) { return 0; }
-
-int cmdPONG(uv_tcp_t *c, const char *server1, const char *server2) { return 0; }
-
-int cmdERROR(uv_tcp_t *c, const char *error_message) { return 0; }
-
-int cmdAWAY(uv_tcp_t *c, const char *text) { return 0; }
-
-int cmdREHASH(uv_tcp_t *c) { return 0; }
-
-int cmdDIE(uv_tcp_t *c) { return 0; }
-
-int cmdRESTART(uv_tcp_t *c) { return 0; }
-
-int cmdSUMMON(uv_tcp_t *c, const char *user, const char *target,
-              const char *channel) {
-  return 0;
-}
-
-int cmdUSERS(uv_tcp_t *c, const char *target) { return 0; }
-
-int cmdWALLOPS(uv_tcp_t *c, const char *text) { return 0; }
-
-int cmdUSERHOST(uv_tcp_t *c, const cmdList2 nicknames[]) { return 0; }
-
-int cmdISON(uv_tcp_t *c, const cmdList2 nicknames[]) { return 0; }
