@@ -5,3 +5,4 @@
 src/*.h
 src/tipirc
 iobj/
+third_party/makeheaders/makeheaders
