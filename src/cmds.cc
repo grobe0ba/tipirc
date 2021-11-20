@@ -15,6 +15,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <uv.h>
+
 #include "cmds.hh"
 
 #if INTERFACE
@@ -105,111 +107,134 @@ EXPORT const CMD string2CMD(const char *cmd) {
 }
 
 // Use this to generate empty function block copypasta
-// #define PROTO(com, args...) int cmd##com(args){ return 0; }
+// #define PROTO(com, args...) int cmd##com(uv_tcp_t *c, args){ return 0; }
 // CMDS(PROTO)
 
-EXPORT int cmdPASS(const char *password) { return 0; }
+int cmdPASS(uv_tcp_t *c, const char *password) { return 0; }
 
-EXPORT int cmdNICK(const char *nickname) { return 0; }
+int cmdNICK(uv_tcp_t *c, const char *nickname) { return 0; }
 
-EXPORT int cmdUSER(const char *user, const char *mode, const char *realname) {
+int cmdUSER(uv_tcp_t *c, const char *user, const char *mode,
+            const char *realname) {
   return 0;
 }
 
-EXPORT int cmdOPER(const char *name, const char *password) { return 0; }
+int cmdOPER(uv_tcp_t *c, const char *name, const char *password) { return 0; }
 
-EXPORT int cmdSERVICE(const char *nickname, const char *distribution, const char *type,
-
-               const char *info) {
+int cmdSERVICE(uv_tcp_t *c, const char *nickname, const char *distribution,
+               const char *type, const char *info) {
   return 0;
 }
 
-EXPORT int cmdQUIT(const char *message) { return 0; }
+int cmdQUIT(uv_tcp_t *c, const char *message) { return 0; }
 
-EXPORT int cmdSQUIT(const char *server, const char *comment) { return 0; }
+int cmdSQUIT(uv_tcp_t *c, const char *server, const char *comment) { return 0; }
 
-EXPORT int cmdJOIN(const cmdList2 channels[]) { return 0; }
+int cmdJOIN(uv_tcp_t *c, const cmdList2 channels[]) { return 0; }
 
-EXPORT int cmdPART(const cmdList2 channels[], const char *message) { return 0; }
-
-EXPORT int cmdMODE(const char *channel, const char **modes, const char **modeparams) {
+int cmdPART(uv_tcp_t *c, const cmdList2 channels[], const char *message) {
   return 0;
 }
 
-EXPORT int cmdTOPIC(const char *channel, const char *topic) { return 0; }
-
-EXPORT int cmdNAMES(const cmdList2 channels[], const char *target) { return 0; }
-
-EXPORT int cmdLIST(const cmdList2 channels[], const char *target) { return 0; }
-
-EXPORT int cmdINVITE(const char *nickname, const char *channel) { return 0; }
-
-EXPORT int cmdKICK(const cmdList2 channels[], const cmdList2 users[], char *comment) {
+int cmdMODE(uv_tcp_t *c, const char *channel, const char **modes,
+            const char **modeparams) {
   return 0;
 }
 
-EXPORT int cmdPRIVMSG(const char *target, const char *message) { return 0; }
+int cmdTOPIC(uv_tcp_t *c, const char *channel, const char *topic) { return 0; }
 
-EXPORT int cmdNOTICE(const char *target, const char *text) { return 0; }
-
-EXPORT int cmdMOTD(const char *target) { return 0; }
-
-EXPORT int cmdLUSERS(const char *mask, const char *target) { return 0; }
-
-EXPORT int cmdVERSION(const char *target) { return 0; }
-
-EXPORT int cmdSTATS(const char *query, const char *target) { return 0; }
-
-EXPORT int cmdLINKS(const char *remote_server, const char *server_mask) { return 0; }
-
-EXPORT int cmdTIME(const char *target) { return 0; }
-
-EXPORT int cmdCONNECT(const char *target_server, int port, const char *remote_server) {
+int cmdNAMES(uv_tcp_t *c, const cmdList2 channels[], const char *target) {
   return 0;
 }
 
-EXPORT int cmdTRACE(const char *target) { return 0; }
-
-EXPORT int cmdADMIN(const char *target) { return 0; }
-
-EXPORT int cmdINFO(const char *target) { return 0; }
-
-EXPORT int cmdSERVLIST(const char *mask, const char *type) { return 0; }
-
-EXPORT int cmdSQUERY(const char *servicename, const char *text) { return 0; }
-
-EXPORT int cmdWHO(const char *mask) { return 0; }
-
-EXPORT int cmdWHOIS(const char *target, const cmdList2 masks[]) { return 0; }
-
-EXPORT int cmdWHOWAS(const cmdList2 nicknames[], int count, const char *target) {
+int cmdLIST(uv_tcp_t *c, const cmdList2 channels[], const char *target) {
   return 0;
 }
 
-EXPORT int cmdKILL(const char *nickname, const char *comment) { return 0; }
-
-EXPORT int cmdPING(const char *server1, const char *server2) { return 0; }
-
-EXPORT int cmdPONG(const char *server1, const char *server2) { return 0; }
-
-EXPORT int cmdERROR(const char *error_message) { return 0; }
-
-EXPORT int cmdAWAY(const char *text) { return 0; }
-
-EXPORT int cmdREHASH() { return 0; }
-
-EXPORT int cmdDIE() { return 0; }
-
-EXPORT int cmdRESTART() { return 0; }
-
-EXPORT int cmdSUMMON(const char *user, const char *target, const char *channel) {
+int cmdINVITE(uv_tcp_t *c, const char *nickname, const char *channel) {
   return 0;
 }
 
-EXPORT int cmdUSERS(const char *target) { return 0; }
+int cmdKICK(uv_tcp_t *c, const cmdList2 channels[], const cmdList2 users[],
+            char *comment) {
+  return 0;
+}
 
-EXPORT int cmdWALLOPS(const char *text) { return 0; }
+int cmdPRIVMSG(uv_tcp_t *c, const char *target, const char *message) {
+  return 0;
+}
 
-EXPORT int cmdUSERHOST(const cmdList2 nicknames[]) { return 0; }
+int cmdNOTICE(uv_tcp_t *c, const char *target, const char *text) { return 0; }
 
-EXPORT int cmdISON(const cmdList2 nicknames[]) { return 0; }
+int cmdMOTD(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdLUSERS(uv_tcp_t *c, const char *mask, const char *target) { return 0; }
+
+int cmdVERSION(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdSTATS(uv_tcp_t *c, const char *query, const char *target) { return 0; }
+
+int cmdLINKS(uv_tcp_t *c, const char *remote_server, const char *server_mask) {
+  return 0;
+}
+
+int cmdTIME(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdCONNECT(uv_tcp_t *c, const char *target_server, int port,
+               const char *remote_server) {
+  return 0;
+}
+
+int cmdTRACE(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdADMIN(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdINFO(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdSERVLIST(uv_tcp_t *c, const char *mask, const char *type) { return 0; }
+
+int cmdSQUERY(uv_tcp_t *c, const char *servicename, const char *text) {
+  return 0;
+}
+
+int cmdWHO(uv_tcp_t *c, const char *mask) { return 0; }
+
+int cmdWHOIS(uv_tcp_t *c, const char *target, const cmdList2 masks[]) {
+  return 0;
+}
+
+int cmdWHOWAS(uv_tcp_t *c, const cmdList2 nicknames[], int count,
+              const char *target) {
+  return 0;
+}
+
+int cmdKILL(uv_tcp_t *c, const char *nickname, const char *comment) {
+  return 0;
+}
+
+int cmdPING(uv_tcp_t *c, const char *server1, const char *server2) { return 0; }
+
+int cmdPONG(uv_tcp_t *c, const char *server1, const char *server2) { return 0; }
+
+int cmdERROR(uv_tcp_t *c, const char *error_message) { return 0; }
+
+int cmdAWAY(uv_tcp_t *c, const char *text) { return 0; }
+
+int cmdREHASH(uv_tcp_t *c) { return 0; }
+
+int cmdDIE(uv_tcp_t *c) { return 0; }
+
+int cmdRESTART(uv_tcp_t *c) { return 0; }
+
+int cmdSUMMON(uv_tcp_t *c, const char *user, const char *target,
+              const char *channel) {
+  return 0;
+}
+
+int cmdUSERS(uv_tcp_t *c, const char *target) { return 0; }
+
+int cmdWALLOPS(uv_tcp_t *c, const char *text) { return 0; }
+
+int cmdUSERHOST(uv_tcp_t *c, const cmdList2 nicknames[]) { return 0; }
+
+int cmdISON(uv_tcp_t *c, const cmdList2 nicknames[]) { return 0; }
