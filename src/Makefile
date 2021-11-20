@@ -19,15 +19,12 @@ IOBJ= ${ROOT}/iobj
 .BEGIN:
 	make -C "${ROOT}/third_party" install
 	${IOBJ}/makeheaders *.cc
-	${IOBJ}/makeheaders -H *.cc > tipirc_public.h
+	${IOBJ}/makeheaders -H *.cc > tipirc_public.h >/dev/null 2>&1
 .endif
 
 LIB= tipirc
 SRCS= rpl.cc cmds.cc tipirc.cc
 CLEANFILES= rpl.hh cmds.hh tipirc.hh tipirc_public.h
-COPTS= -I/usr/local/include \
-	   -I"${IOBJ}/include"
-
 CXXOPTS= -std=c++17 \
 		 -I/usr/local/include \
 		 -I"${IOBJ}/include"

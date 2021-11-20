@@ -19,11 +19,68 @@
 
 #include <string>
 
+#if INTERFACE
+#define CALLBACKS(X) \
+  X(READY)           \
+  X(PRIVMSG)         \
+  X(WHOIS)           \
+  X(CTCP)
+#endif
+
+#if EXPORT_INTERFACE
+typedef enum {
+  tipEvent_BAD = -1,
+  tipEvent_Reply,
+  tipEvent_Command,
+  tipEvent_MAX
+} tipEventType;
+typedef struct tipEvent {
+  tipEventType type;
+  union {
+    RPL rpl;
+    CMD cmd;
+  };
+  void *data;
+};
+
+typedef void (*tipCallback)(void *, tipEvent *);
+
+class tipirc {
+ public:
+  tipirc(void);
+  virtual ~tipirc() = 0;
+#define ACC(msg) \
+  void setOn##msg(tipCallback f) { On##msg = f; };
+  CALLBACKS(ACC)
+#undef ACC
+ private:
+#define PROTO(msg) tipCallback On##msg;
+  CALLBACKS(PROTO)
+#undef PROTO
+};
+
+#endif
+
+#define DEFAULT(msg)                                   \
+  void defaultOn##msg(void *ctx, tipEvent *e) { \
+    LOG(INFO) << "Received message " << #msg;          \
+  }
+CALLBACKS(DEFAULT)
+#undef DEFAULT
+
+#define DEFEV(msg) void defaultOn##msg(void *, tipEvent *);
+CALLBACKS(DEFEV)
+#undef DEFEV
+
+tipirc::tipirc(void) {
+#define DEFAULT(msg) On##msg = defaultOn##msg;
+  CALLBACKS(DEFAULT)
+#undef DEFAULT
+}
 
 EXPORT int tipinit(int argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
-  gflags::SetUsageMessage("Rubbish Tip IRC client");
+  gflags::SetUsageMessage("Rubbish Tip IRC library");
   gflags::ParseCommandLineFlags(&argc, &argv, true);
-
   return 0;
 }
