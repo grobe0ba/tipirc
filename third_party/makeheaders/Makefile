@@ -12,29 +12,12 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-ROOT !!= readlink -f ..
+ROOT !!= readlink -f ../..
 IOBJ= ${ROOT}/iobj
 
-.ifnmake clean
-.BEGIN:
-	make -C "${ROOT}/third_party" install
-	${IOBJ}/makeheaders *.[ch] *.cc
-.endif
 
-LIB= tipirc
-SRCS= rpl.c tipirc.cc
-CLEANFILES= rpl.h tipirc.hh
-COPTS= -I/usr/local/include \
-	   -I"${IOBJ}/include"
-
-CXXOPTS= -std=c++17 \
-		 -I/usr/local/include \
-		 -I"${IOBJ}/include"
-
-LDADD= -L/usr/local/lib \
-	   -L"${IOBJ}/lib" \
-	   -lgflags -lglog
-
+PROG= makeheaders
+SRCS= makeheaders.c
 NOMAN= noman
 
 .include "${ROOT}/Makefile.inc"
@@ -43,4 +26,4 @@ NOMAN= noman
 DESTDIR !!= readlink -f ${ROOT}/iobj
 .endif
 
-.include <bsd.lib.mk>
+.include <bsd.prog.mk>
