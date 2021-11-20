@@ -18,18 +18,23 @@ IOBJ= ${ROOT}/iobj
 .ifnmake clean
 .BEGIN:
 	make -C "${ROOT}/third_party" install
+	makeheaders *.[ch] *.cc
 .endif
 
-PROG= gridbot
-SRCS= main.cc disco.cc ringbuf.c
+LIB= tipirc
+SRCS= rpl.c tipirc.cc
+CLEANFILES= rpl.h tipirc.hh
+COPTS= -I/usr/local/include \
+	   -I"${IOBJ}/include"
+
 CXXOPTS= -std=c++17 \
 		 -I/usr/local/include \
 		 -I"${IOBJ}/include"
 
 LDADD= -L/usr/local/lib \
 	   -L"${IOBJ}/lib" \
-	   -lgflags -lglog \
-	   -ldpp -lsodium -lssl -lz -lcrypto -lm -lopus -lixp
+	   -lgflags -lglog
+
 NOMAN= noman
 
 .include "${ROOT}/Makefile.inc"
@@ -38,4 +43,4 @@ NOMAN= noman
 DESTDIR !!= readlink -f ${ROOT}/iobj
 .endif
 
-.include <bsd.prog.mk>
+.include <bsd.lib.mk>
