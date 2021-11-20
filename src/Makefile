@@ -19,7 +19,7 @@ IOBJ= ${ROOT}/iobj
 .BEGIN:
 	make -C "${ROOT}/third_party" install
 	${IOBJ}/makeheaders *.cc
-	${IOBJ}/makeheaders -H *.cc > tipirc_public.h >/dev/null 2>&1
+	${IOBJ}/makeheaders -H *.cc > tipirc_public.h 2>/dev/null
 .endif
 
 LIB= tipirc
