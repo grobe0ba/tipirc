@@ -1,0 +1,7 @@
+*.a
+*.o
+*.d
+*.po
+src/*.h
+src/tipirc
+iobj/
