@@ -22,7 +22,7 @@ IOBJ= ${ROOT}/iobj
 .endif
 
 LIB= tipirc
-SRCS= rpl.c tipirc.cc
+SRCS= rpl.c cmds.c tipirc.cc
 CLEANFILES= rpl.h tipirc.hh
 COPTS= -I/usr/local/include \
 	   -I"${IOBJ}/include"
