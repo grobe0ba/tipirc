@@ -2,7 +2,8 @@
 *.o
 *.d
 *.po
-src/*.h
-src/tipirc
+src/*.hh
+src/tipirc_public.h
+src/x.x
 iobj/
 third_party/makeheaders/makeheaders

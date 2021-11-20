@@ -61,9 +61,6 @@ class tipirc {
 #define PROTO(com, fmt, args...) void cmd##com(args);
   CMDS(PROTO)
 #undef PROTO
-#define PROTO(com, args...) void cmd##com(args);
-  LCMDS(PROTO)
-#undef PROTO
  private:
   uv_tcp_t *handle;
 #define PROTO(msg) tipCallback On##msg;
@@ -560,6 +557,192 @@ void tipirc::cmdWALLOPS(const char *text) {
            "%s"
            "\r\n",
            text);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+
+void tipirc::cmdMODE(const char *channel, const char **modes,
+                     const char **modeparams) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "MODE"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdJOIN(const cmdList2 channels[]) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "JOIN"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdPART(const cmdList2 channels[], const char *message) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "PART"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdNAMES(const cmdList2 channels[], const char *target) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "NAMES"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdLIST(const cmdList2 channels[], const char *target) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "LIST"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdKICK(const cmdList2 channels[], const cmdList2 users[],
+                     char *comment) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "KICK"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdWHOIS(const char *target, const cmdList2 masks[]) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "WHOIS"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdWHOWAS(const cmdList2 nicknames[], int count,
+                       const char *target) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "WHOWAS"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdREHASH() {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "REHASH"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdDIE() {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "DIE"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdRESTART() {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "RESTART"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdUSERHOST(const cmdList2 nicknames[]) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "USERHOST"
+           ""
+           "\r\n",
+           NULL);
+  uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
+  uv_write_t *w;
+  CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
+  w->data = buf;
+  uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);
+}
+void tipirc::cmdISON(const cmdList2 nicknames[]) {
+  char *buf;
+  CHECK((buf = static_cast<char *>(calloc(512, sizeof(char)))) != nullptr);
+  snprintf(buf, 512,
+           "ISON"
+           ""
+           "\r\n",
+           NULL);
   uv_buf_t b = uv_buf_init(strndup(buf, 512), strlen(buf) + 1);
   uv_write_t *w;
   CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != nullptr);
