@@ -19,52 +19,57 @@
 
 #if INTERFACE
 
-#define CMDS(X)                                                                \
-  X(PASS, const char *password)                                                \
-  X(NICK, const char *nickname)                                                \
-  X(USER, const char *user, const char *mode, const char *realname)            \
-  X(OPER, const char *name, const char *password)                              \
-  X(SERVICE, const char *nickname, const char *distribution, const char *type, \
-    const char *info)                                                          \
-  X(QUIT, const char *message)                                                 \
-  X(SQUIT, const char *server, const char *comment)                            \
-  X(JOIN, const cmdList2 channels[])                                           \
-  X(PART, const cmdList2 channels[], const char *message)                      \
-  X(MODE, const char *channel, const char **modes, const char **modeparams)    \
-  X(TOPIC, const char *channel, const char *topic)                             \
-  X(NAMES, const cmdList2 channels[], const char *target)                      \
-  X(LIST, const cmdList2 channels[], const char *target)                       \
-  X(INVITE, const char *nickname, const char *channel)                         \
-  X(KICK, const cmdList2 channels[], const cmdList2 users[], char *comment)    \
-  X(PRIVMSG, const char *target, const char *message)                          \
-  X(NOTICE, const char *target, const char *text)                              \
-  X(MOTD, const char *target)                                                  \
-  X(LUSERS, const char *mask, const char *target)                              \
-  X(VERSION, const char *target)                                               \
-  X(STATS, const char *query, const char *target)                              \
-  X(LINKS, const char *remote_server, const char *server_mask)                 \
-  X(TIME, const char *target)                                                  \
-  X(CONNECT, const char *target_server, int port, const char *remote_server)   \
-  X(TRACE, const char *target)                                                 \
-  X(ADMIN, const char *target)                                                 \
-  X(INFO, const char *target)                                                  \
-  X(SERVLIST, const char *mask, const char *type)                              \
-  X(SQUERY, const char *servicename, const char *text)                         \
-  X(WHO, const char *mask)                                                     \
-  X(WHOIS, const char *target, const cmdList2 masks[])                         \
-  X(WHOWAS, const cmdList2 nicknames[], int count, const char *target)         \
-  X(KILL, const char *nickname, const char *comment)                           \
-  X(PING, const char *server1, const char *server2)                            \
-  X(PONG, const char *server1, const char *server2)                            \
-  X(ERROR, const char *error_message)                                          \
-  X(AWAY, const char *text)                                                    \
-  X(REHASH)                                                                    \
-  X(DIE)                                                                       \
-  X(RESTART)                                                                   \
-  X(SUMMON, const char *user, const char *target, const char *channel)         \
-  X(USERS, const char *target)                                                 \
-  X(WALLOPS, const char *text)                                                 \
-  X(USERHOST, const cmdList2 nicknames[])                                      \
+#define CMDS(X)                                                         \
+  X(PASS, "%s", const char *password)                                   \
+  X(NICK, "%s", const char *nickname)                                   \
+  X(USER, "%s %s * %s", const char *user, const char *mode,             \
+    const char *realname)                                               \
+  X(OPER, "%s %s", const char *name, const char *password)              \
+  X(SERVICE, "%s * %s %s * %s", const char *nickname,                   \
+    const char *distribution, const char *type, const char *info)       \
+  X(QUIT, "%s", const char *message)                                    \
+  X(SQUIT, "%s %s", const char *server, const char *comment)            \
+  X(TOPIC, "%s %s", const char *channel, const char *topic)             \
+  X(INVITE, "%s %s", const char *nickname, const char *channel)         \
+  X(PRIVMSG, "%s %s", const char *target, const char *message)          \
+  X(NOTICE, "%s %s", const char *target, const char *text)              \
+  X(MOTD, "%s", const char *target)                                     \
+  X(LUSERS, "%s %s", const char *mask, const char *target)              \
+  X(VERSION, "%s", const char *target)                                  \
+  X(STATS, "%s %s", const char *query, const char *target)              \
+  X(LINKS, "%s %s", const char *remote_server, const char *server_mask) \
+  X(TIME, "%s", const char *target)                                     \
+  X(CONNECT, "%s %d %s", const char *target_server, int port,           \
+    const char *remote_server)                                          \
+  X(TRACE, "%s", const char *target)                                    \
+  X(ADMIN, "%s", const char *target)                                    \
+  X(INFO, "%s", const char *target)                                     \
+  X(SERVLIST, "%s %s", const char *mask, const char *type)              \
+  X(SQUERY, "%s %s", const char *servicename, const char *text)         \
+  X(WHO, "%s", const char *mask)                                        \
+  X(KILL, "%s %s", const char *nickname, const char *comment)           \
+  X(PING, "%s %s", const char *server1, const char *server2)            \
+  X(PONG, "%s %s", const char *server1, const char *server2)            \
+  X(ERROR, "%s", const char *error_message)                             \
+  X(AWAY, "%s", const char *text)                                       \
+  X(SUMMON, "%s %s %s", const char *user, const char *target,           \
+    const char *channel)                                                \
+  X(USERS, "%s", const char *target)                                    \
+  X(WALLOPS, "%s", const char *text)
+
+#define LCMDS(X)                                                            \
+  X(MODE, const char *channel, const char **modes, const char **modeparams) \
+  X(JOIN, const cmdList2 channels[])                                        \
+  X(PART, const cmdList2 channels[], const char *message)                   \
+  X(NAMES, const cmdList2 channels[], const char *target)                   \
+  X(LIST, const cmdList2 channels[], const char *target)                    \
+  X(KICK, const cmdList2 channels[], const cmdList2 users[], char *comment) \
+  X(WHOIS, const char *target, const cmdList2 masks[])                      \
+  X(WHOWAS, const cmdList2 nicknames[], int count, const char *target)      \
+  X(REHASH)                                                                 \
+  X(DIE)                                                                    \
+  X(RESTART)                                                                \
+  X(USERHOST, const cmdList2 nicknames[])                                   \
   X(ISON, const cmdList2 nicknames[])
 
 typedef struct {
@@ -74,7 +79,7 @@ typedef struct {
 
 typedef enum {
   CMD_BADCMD = -1,
-#define ENUM(cmd, args...) CMD_##cmd,
+#define ENUM(cmd, fmt, args...) CMD_##cmd,
   CMDS(ENUM)
 #undef ENUM
       CMD_MAX
@@ -82,13 +87,13 @@ typedef enum {
 
 #endif
 
-#define TXT(cmd, args...) #cmd,
+#define TXT(cmd, fmt, args...) #cmd,
 const char *cmdStrings[] = {CMDS(TXT)};
 #undef TXT
 
 EXPORT const char *CMD2string(CMD cmd) {
   if (cmd > CMD_BADCMD && cmd < CMD_MAX) {
-#define C2s(c, a...) \
+#define C2s(c, fmt, a...) \
   if (cmd == CMD_##c) return cmdStrings[CMD_##c];
     CMDS(C2s)
 #undef C2s
@@ -97,7 +102,7 @@ EXPORT const char *CMD2string(CMD cmd) {
 }
 
 EXPORT const CMD string2CMD(const char *cmd) {
-#define s2C(c, a...) \
+#define s2C(c, fmt, a...) \
   if (strncmp(cmd, cmdStrings[CMD_##c], 8) == 0) return CMD_##c;
   CMDS(s2C)
 #undef s2C
