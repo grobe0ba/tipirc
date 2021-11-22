@@ -61,10 +61,9 @@ class tipirc {
   void setOn##msg(tipCallback f) { On##msg = f; };
   CALLBACKS(ACC)
 #undef ACC
-#define ADDTYPE(r, d, x) (const char*  x)
+#define ADDTYPE(r, d, x) (const char *x)
 #define PROTO(com, fmt, args...) \
-  void cmd##com( \
-          BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args)));
+  void cmd##com(BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args)));
   CMDS(PROTO)
 #undef PROTO
 #undef ADDTYPE
@@ -105,11 +104,14 @@ void writeCallback(uv_write_t *r, int status) {
 }
 #endif
 
-#define ADDTYPE(r, d, x) (const char* x)
+#define ADDTYPE(r, d, x) (const char *x)
+#define CHECKNULL(r, d, x) \
+  if (x == NULL) x = "";
 #define HANDLEMSG(com, fmt, args...)                                          \
   void tipirc::cmd##com(                                                      \
       BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args))) {           \
     char *buf;                                                                \
+    BOOST_PP_SEQ_FOR_EACH(CHECKNULL, ~, args)                                 \
     CHECK((buf = static_cast<char *>(calloc(WBUFSZ, sizeof(char)))) != NULL); \
     snprintf(buf, WBUFSZ, #com fmt "\r\n", BOOST_PP_SEQ_ENUM(args));          \
     uv_buf_t b = uv_buf_init(strndup(buf, WBUFSZ), strlen(buf) + 1);          \
@@ -122,5 +124,5 @@ void writeCallback(uv_write_t *r, int status) {
 
 CMDS(HANDLEMSG)
 #undef HANDLEMSG
+#undef CHECKNULL
 #undef ADDTYPE
-#undef EVAL
