@@ -121,17 +121,16 @@ void writeCallback(uv_write_t *r, int status) { free(r); }
 
 #define NONE(...)
 #define ADDTYPE(r, d, x) (std::string x)
-#define HANDLEMSG(com, fmtstr, args...)                                       \
-  void tipirc::cmd##com(                                                      \
-      BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args))) {           \
-    std::string sbuf = fmt::format(fmtstr, BOOST_PP_SEQ_ENUM(args));          \
-    const char *buf = sbuf.c_str();                                           \
-    CHECK((buf = static_cast<char *>(calloc(WBUFSZ, sizeof(char)))) != NULL); \
-    uv_buf_t b = uv_buf_init(strndup(buf, WBUFSZ), strlen(buf) + 1);          \
-    uv_write_t *w;                                                            \
-    CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) !=      \
-          NULL);                                                              \
-    uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);           \
+#define HANDLEMSG(com, fmtstr, args...)                                  \
+  void tipirc::cmd##com(                                                 \
+      BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args))) {      \
+    std::string sbuf = fmt::format(fmtstr, BOOST_PP_SEQ_ENUM(args));     \
+    const char *buf = sbuf.c_str();                                      \
+    uv_buf_t b = uv_buf_init(strndup(buf, WBUFSZ), strlen(buf) + 1);     \
+    uv_write_t *w;                                                       \
+    CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) != \
+          NULL);                                                         \
+    uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);      \
   }
 CMDS(HANDLEMSG)
 #undef HANDLEMSG
