@@ -73,6 +73,17 @@ class tipirc {
   void cmdMODE(std::string target, std::vector<std::string> modes,
                std::vector<std::string> modeparams);
   void cmdJOIN(std::vector<std::string> channels);
+  void cmdPART(std::vector<std::string> channels, std::string message);
+  void cmdNAMES(std::vector<std::string> channels, std::string target);
+  void cmdLIST(std::vector<std::string> channels, std::string target);
+  void cmdKICK(std::vector<std::string> channels,
+               std::vector<std::string> users, std::string comment);
+  void cmdREHASH(void);
+  void cmdDIE(void);
+  void cmdRESTART(void);
+  void cmdWHOIS(std::string target, std::vector<std::string> masks);
+  void cmdUSERHOST(std::vector<std::string> nicknames);
+  void cmdISON(std::vector<std::string> nicknames);
 
  private:
   uv_tcp_t *handle;
@@ -103,9 +114,7 @@ tipirc::tipirc(void) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-void writeCallback(uv_write_t *r, int status) {
-  free(r);
-}
+void writeCallback(uv_write_t *r, int status) { free(r); }
 #ifdef __cplusplus
 }
 #endif
@@ -116,7 +125,7 @@ void writeCallback(uv_write_t *r, int status) {
   void tipirc::cmd##com(                                                      \
       BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args))) {           \
     std::string sbuf = fmt::format(fmtstr, BOOST_PP_SEQ_ENUM(args));          \
-    const char *buf = sbuf.c_str();                                                 \
+    const char *buf = sbuf.c_str();                                           \
     CHECK((buf = static_cast<char *>(calloc(WBUFSZ, sizeof(char)))) != NULL); \
     uv_buf_t b = uv_buf_init(strndup(buf, WBUFSZ), strlen(buf) + 1);          \
     uv_write_t *w;                                                            \

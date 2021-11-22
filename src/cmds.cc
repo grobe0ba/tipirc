@@ -61,7 +61,7 @@
   X(JOIN, ~, std::vector<std::string> channels)                      \
   X(PART, ~, std::vector<std::string> channels, std::string message) \
   X(NAMES, ~, std::vector<std::string> channels, std::string target) \
-  X(LIST, ~, std::vector<std::string> channels, target)              \
+  X(LIST, ~, std::vector<std::string> channels, std::string target)  \
   X(KICK, ~, std::vector<std::string> channels,                      \
     std::vector<std::string> users, std::string comment)             \
   X(REHASH, ~, ~)                                                    \
