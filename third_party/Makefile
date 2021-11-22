@@ -13,7 +13,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 PROJECT= gridirc
-SUBDIR= makeheaders
+SUBDIR= makeheaders fmt-8.0.1
 
 .include <bsd.subdir.mk>
 

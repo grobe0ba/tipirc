@@ -14,65 +14,64 @@
 
 #include "cmds.hh"
 
-#include <string.h>
-#include <unistd.h>
+#include <fmt/core.h>
+
+#include <string>
+#include <vector>
 
 #if INTERFACE
 
 #define CMDS(X)                                                       \
-  X(PASS, "%s", (password))                                           \
-  X(NICK, "%s", (nickname))                                           \
-  X(USER, "%s %s * %s", (user)(mode)(realname))                       \
-  X(OPER, "%s %s", (name)(password))                                  \
-  X(SERVICE, "%s * %s %s * %s", (nickname)(distribution)(type)(info)) \
-  X(QUIT, "%s", (message))                                            \
-  X(SQUIT, "%s %s", (server)(comment))                                \
-  X(TOPIC, "%s %s", (channel)(topic))                                 \
-  X(INVITE, "%s %s", (nickname)(channel))                             \
-  X(PRIVMSG, "%s %s", (target)(message))                              \
-  X(NOTICE, "%s %s", (target)(text))                                  \
-  X(MOTD, "%s", (target))                                             \
-  X(LUSERS, "%s %s", (mask)(target))                                  \
-  X(VERSION, "%s", (target))                                          \
-  X(STATS, "%s %s", (query)(target))                                  \
-  X(LINKS, "%s %s", (remote_server)(server_mask))                     \
-  X(TIME, "%s", (target))                                             \
-  X(CONNECT, "%s %s %s", (target_server)(port)(remote_server))        \
-  X(TRACE, "%s", (target))                                            \
-  X(ADMIN, "%s", (target))                                            \
-  X(INFO, "%s", (target))                                             \
-  X(SERVLIST, "%s %s", (mask)(type))                                  \
-  X(SQUERY, "%s %s", (servicename)(text))                             \
-  X(WHO, "%s", (mask))                                                \
-  X(KILL, "%s %s", (nickname)(comment))                               \
-  X(PING, "%s %s", (server1)(server2))                                \
-  X(PONG, "%s %s", (server1)(server2))                                \
-  X(ERROR, "%s", (error_message))                                     \
-  X(AWAY, "%s", (text))                                               \
-  X(SUMMON, "%s %s %s", (user)(target)(channel))                      \
-  X(USERS, "%s", (target))                                            \
-  X(WALLOPS, "%s", (text))
+  X(PASS, "{}", (password))                                           \
+  X(NICK, "{}", (nickname))                                           \
+  X(USER, "{} {} * {}", (user)(mode)(realname))                       \
+  X(OPER, "{} {}", (name)(password))                                  \
+  X(SERVICE, "{} * {} {} * {}", (nickname)(distribution)(type)(info)) \
+  X(QUIT, "{}", (message))                                            \
+  X(SQUIT, "{} {}", (server)(comment))                                \
+  X(TOPIC, "{} {}", (channel)(topic))                                 \
+  X(INVITE, "{} {}", (nickname)(channel))                             \
+  X(PRIVMSG, "{} {}", (target)(message))                              \
+  X(NOTICE, "{} {}", (target)(text))                                  \
+  X(MOTD, "{}", (target))                                             \
+  X(LUSERS, "{} {}", (mask)(target))                                  \
+  X(VERSION, "{}", (target))                                          \
+  X(STATS, "{} {}", (query)(target))                                  \
+  X(LINKS, "{} {}", (remote_server)(server_mask))                     \
+  X(TIME, "{}", (target))                                             \
+  X(CONNECT, "{} {} {}", (target_server)(port)(remote_server))        \
+  X(TRACE, "{}", (target))                                            \
+  X(ADMIN, "{}", (target))                                            \
+  X(INFO, "{}", (target))                                             \
+  X(SERVLIST, "{} {}", (mask)(type))                                  \
+  X(SQUERY, "{} {}", (servicename)(text))                             \
+  X(WHO, "{}", (mask))                                                \
+  X(KILL, "{} {}", (nickname)(comment))                               \
+  X(PING, "{} {}", (server1)(server2))                                \
+  X(PONG, "{} {}", (server1)(server2))                                \
+  X(ERROR, "{}", (error_message))                                     \
+  X(AWAY, "{}", (text))                                               \
+  X(SUMMON, "{} {} {}", (user)(target)(channel))                      \
+  X(USERS, "{}", (target))                                            \
+  X(WALLOPS, "{}", (text))
 
-#define LCMDS(X)                                                               \
-  X(MODE, "", const char *target, const char **modes, const char **modeparams) \
-  X(JOIN, ~, const cmdList2 channels[])                                        \
-  X(PART, ~, const cmdList2 channels[], const char *message)                   \
-  X(NAMES, ~, const cmdList2 channels[], target)                               \
-  X(LIST, ~, const cmdList2 channels[], target)                                \
-  X(KICK, ~, const cmdList2 channels[], const cmdList2 users[],                \
-    const char *comment)                                                       \
-  X(REHASH, ~, ~)                                                              \
-  X(DIE, ~, ~)                                                                 \
-  X(RESTART, ~, ~)                                                             \
-  X(WHOIS, ~, const char *target, const cmdList2 masks[])                      \
-  X(WHOWAS, ~, const cmdList2 nicknames[], int count, const char *target)      \
-  X(USERHOST, ~, const cmdList2 nicknames[])                                   \
-  X(ISON, ~, const cmdList2 nicknames[])
-
-typedef struct {
-  const char *name;
-  const char *value;
-} cmdList2;
+#define LCMDS(X)                                                     \
+  X(MODE, "", std::string target, std::vector<std::string> modes,    \
+    std::vector<std::string> modeparams)                             \
+  X(JOIN, ~, std::vector<std::string> channels)                      \
+  X(PART, ~, std::vector<std::string> channels, std::string message) \
+  X(NAMES, ~, std::vector<std::string> channels, std::string target) \
+  X(LIST, ~, std::vector<std::string> channels, target)              \
+  X(KICK, ~, std::vector<std::string> channels,                      \
+    std::vector<std::string> users, std::string comment)             \
+  X(REHASH, ~, ~)                                                    \
+  X(DIE, ~, ~)                                                       \
+  X(RESTART, ~, ~)                                                   \
+  X(WHOIS, ~, std::string target, std::vector<std::string> masks)    \
+  X(WHOWAS, ~, std::vector<std::string> nicknames, int count,        \
+    std::string target)                                              \
+  X(USERHOST, ~, std::vector<std::string> nicknames)                 \
+  X(ISON, ~, std::vector<std::string> nicknames)
 
 typedef enum {
   CMD_BADCMD = -1,

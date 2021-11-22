@@ -27,7 +27,11 @@ build: configure
 
 configure:
 	mkdir -p b
-	cd b && cmake -Wno-dev -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${ROOT}/iobj" -DBUILD_SHARED_LIBS=OFF -DDPP_BUILD_TEST=OFF -Dsodium_USE_STATIC_LIBS=ON ..
+	cd b && cmake -Wno-dev -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="${ROOT}/iobj" \
+        -DBUILD_SHARED_LIBS=OFF \
+        ..
 	touch configure
 
 clean:

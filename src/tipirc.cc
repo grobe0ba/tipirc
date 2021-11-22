@@ -14,17 +14,20 @@
 
 #include "tipirc.hh"
 
+#include <fmt/core.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <uv.h>
 
 #include <boost/preprocessor.hpp>
 #include <string>
+#include <vector>
 
 #if INTERFACE
 #include <uv.h>
 
 #include <boost/preprocessor.hpp>
+#include <string>
 
 #define WBUFSZ 512
 
@@ -61,12 +64,16 @@ class tipirc {
   void setOn##msg(tipCallback f) { On##msg = f; };
   CALLBACKS(ACC)
 #undef ACC
-#define ADDTYPE(r, d, x) (const char *x)
+#define ADDTYPE(r, d, x) (std::string x)
 #define PROTO(com, fmt, args...) \
   void cmd##com(BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args)));
   CMDS(PROTO)
 #undef PROTO
 #undef ADDTYPE
+  void cmdMODE(std::string target, std::vector<std::string> modes,
+               std::vector<std::string> modeparams);
+  void cmdJOIN(std::vector<std::string> channels);
+
  private:
   uv_tcp_t *handle;
 #define PROTO(msg) tipCallback On##msg;
@@ -97,31 +104,26 @@ tipirc::tipirc(void) {
 extern "C" {
 #endif
 void writeCallback(uv_write_t *r, int status) {
-  free(r->data);
   free(r);
 }
 #ifdef __cplusplus
 }
 #endif
 
-#define ADDTYPE(r, d, x) (const char *x)
-#define CHECKNULL(r, d, x) \
-  if (x == NULL) x = "";
-#define HANDLEMSG(com, fmt, args...)                                          \
+#define NONE(...)
+#define ADDTYPE(r, d, x) (std::string x)
+#define HANDLEMSG(com, fmtstr, args...)                                       \
   void tipirc::cmd##com(                                                      \
       BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH(ADDTYPE, ~, args))) {           \
-    char *buf;                                                                \
-    BOOST_PP_SEQ_FOR_EACH(CHECKNULL, ~, args)                                 \
+    std::string sbuf = fmt::format(fmtstr, BOOST_PP_SEQ_ENUM(args));          \
+    const char *buf = sbuf.c_str();                                                 \
     CHECK((buf = static_cast<char *>(calloc(WBUFSZ, sizeof(char)))) != NULL); \
-    snprintf(buf, WBUFSZ, #com fmt "\r\n", BOOST_PP_SEQ_ENUM(args));          \
     uv_buf_t b = uv_buf_init(strndup(buf, WBUFSZ), strlen(buf) + 1);          \
     uv_write_t *w;                                                            \
     CHECK((w = static_cast<uv_write_t *>(malloc(sizeof(uv_write_t)))) !=      \
           NULL);                                                              \
-    w->data = buf;                                                            \
     uv_write(w, (uv_stream_t *)this->handle, &b, 1, writeCallback);           \
   }
-
 CMDS(HANDLEMSG)
 #undef HANDLEMSG
 #undef CHECKNULL
